@@ -14,10 +14,10 @@ function crearTarjeta(evento) {
               </div>
           </div>`;
 }
-function imprimirTarjetas(datos,contenedor) {
+function imprimirTarjetas(data,contenedor) {
     let html = "";
-    for (let i = 0; i < datos.events.length; i++) {
-      html += crearTarjeta(datos.events[i]);
+    for(const evento of data.events){
+        html += crearTarjeta(evento);
     }
     contenedor.innerHTML = html;
 } 

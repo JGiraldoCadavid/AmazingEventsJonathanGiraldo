@@ -16,18 +16,18 @@ function crearTarjeta(eventosProximos) {
 function imprimirTarjetas(eventosProximos,idContenedor) {
     let contTarjetas=document.getElementById(idContenedor)
     let html = "";
-    for (let i = 0; i < eventosProximos.length; i++) {
-      html += crearTarjeta(eventosProximos[i]);
+    for(const evento of eventosProximos){
+        html+=crearTarjeta(evento);
     }
     contTarjetas.innerHTML = html;
 } 
 function filtrar(data){
     let eventosProximos=[];
-    for (let i = 0; i < data.events.length; i++) {
-           if(data.currentDate<data.events[i].date){
-            eventosProximos.push(data.events[i]);
-           }     
+    for(const evento of data.events){
+        if(data.currentDate<evento.date){
+            eventosProximos.push(evento);
+        }
     }
     return eventosProximos;
-}
+} 
 imprimirTarjetas(filtrar(data),"contTarjetas");

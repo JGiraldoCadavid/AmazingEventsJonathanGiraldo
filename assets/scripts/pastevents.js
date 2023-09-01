@@ -16,17 +16,17 @@ function crearTarjeta(eventosPasados) {
 function imprimirTarjetas(eventosPasados,idContenedor) {
     let contTarjetas=document.getElementById(idContenedor)
     let html = "";
-    for (let i = 0; i < eventosPasados.length; i++) {
-      html += crearTarjeta(eventosPasados[i]);
+    for(const evento of eventosPasados){
+        html+=crearTarjeta(evento);
     }
-    contTarjetas.innerHTML = html;
+    contTarjetas.innerHTML= html;
 } 
 function filtrar(data){
     let eventosPasados=[];
-    for (let i = 0; i < data.events.length; i++) {
-           if(data.currentDate>data.events[i].date){
-                eventosPasados.push(data.events[i]);
-           }    
+    for(const evento of data.events){
+        if(data.currentDate>evento.date){
+            eventosPasados.push(evento);
+       } 
     }
     return eventosPasados;
 }
