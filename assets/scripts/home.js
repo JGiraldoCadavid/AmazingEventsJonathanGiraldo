@@ -22,3 +22,43 @@ function imprimirTarjetas(data,contenedor) {
     contenedor.innerHTML = html;
 } 
 imprimirTarjetas(data,contTarjetas);
+
+function filtrarCategorias(data){
+    let categoria="";
+    let categorias = data.events.filter((evento, indice) => {
+        
+        if(indice==0){
+            categoria=evento.category;
+            return categoria;
+        }
+        if(categoria!=evento.category){
+            categoria=evento.category;
+            return categoria;
+        }
+    })
+    return categorias
+}
+
+function crearCheckBoxs(categoria){
+   return   `<div class="ms-3 me-2 mb-3">
+                <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="inlineFormCheck2">
+                <label class="form-check-label" for="inlineFormCheck2">
+                    ${categoria.category}
+                </label>
+                </div>
+            </div>`
+}
+
+function imprimirCheckBoxs(categorias, contenedorCb){
+    let contCheckBoxs= document.getElementById(contenedorCb);
+    let contenidoHtml="";
+
+    categorias.forEach(categoria => {
+        contenidoHtml+=crearCheckBoxs(categoria);
+    })
+
+    contCheckBoxs.innerHTML=contenidoHtml;
+}
+
+imprimirCheckBoxs(filtrarCategorias(data),"categorias")
