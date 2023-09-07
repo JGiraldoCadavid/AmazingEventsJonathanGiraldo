@@ -13,10 +13,12 @@ function crearTarjeta(eventosProximos) {
               </div>
           </div>`;
 }
-function imprimirTarjetas(eventosProximos,idContenedor) {
-    let contTarjetas=document.getElementById(idContenedor)
+let eventos=data.events;
+let contTarjetas=document.getElementById("contTarjetas")
+
+function imprimirTarjetas(array) {
     let html = "";
-    for(const evento of eventosProximos){
+    for(const evento of array){
         html+=crearTarjeta(evento);
     }
     contTarjetas.innerHTML = html;
@@ -30,11 +32,11 @@ function filtrar(data){
     }
     return eventosProximos;
 } 
-imprimirTarjetas(filtrar(data),"contTarjetas");
+imprimirTarjetas(filtrar(data));
 
-function filtrarCategorias(data){
+function filtrarCategorias(){
     let categoria="";
-    let categorias = data.events.filter((evento, indice) => {
+    let categorias = eventos.filter((evento, indice) => {
         
         if(indice==0){
             categoria=evento.category;
@@ -51,8 +53,8 @@ function filtrarCategorias(data){
 function crearCheckBoxs(categoria){
    return   `<div class="ms-3 me-2 mb-3">
                 <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="inlineFormCheck2">
-                <label class="form-check-label" for="inlineFormCheck2">
+                <input class="form-check-input seleccion" type="checkbox" id="${categoria.category}">
+                <label class="form-check-label" for="${categoria.category}">
                     ${categoria.category}
                 </label>
                 </div>
@@ -70,4 +72,28 @@ function imprimirCheckBoxs(categorias, contenedorCb){
     contCheckBoxs.innerHTML=contenidoHtml;
 }
 
-imprimirCheckBoxs(filtrarCategorias(data),"categoriasUe")
+imprimirCheckBoxs(filtrarCategorias(),"categoriasUe")
+
+function obtenerCategorias(data){
+    let categorias=document.querySelectorAll(".seleccion")
+    categorias.forEach(categoria =>{
+        categoria.addEventListener('input', () => {
+            let checkedActivo = Array.from(categorias)
+                .filter(categoria => categoria.checked)
+                .map(categoria => categoria.id);
+
+                if(checkedActivo.length>0){
+                    imprimirTarjetas(categoriasSeleccionadas(data,checkedActivo),contTarjetas)
+                }else{
+                    imprimirTarjetas(filtrar(data),contTarjetas)
+                }       
+        })
+    })
+}
+
+function categoriasSeleccionadas(data,checkedActivo){
+    if(checkedActivo){          
+        return filtrar(data).filter(evento => checkedActivo.includes(evento.category));
+    }           
+} 
+obtenerCategorias(data)

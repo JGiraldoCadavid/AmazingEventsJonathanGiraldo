@@ -14,26 +14,26 @@ function crearTarjeta(evento) {
               </div>
           </div>`;
 }
-function imprimirTarjetas(data,contenedor) {
+let eventos=data.events;
+function imprimirTarjetas(array,contenedor) {
     let html = "";
-    for(const evento of data.events){
+
+    for(const evento of array){
         html += crearTarjeta(evento);
     }
     contenedor.innerHTML = html;
 } 
-imprimirTarjetas(data,contTarjetas);
+imprimirTarjetas(eventos,contTarjetas);
 
 function filtrarCategorias(data){
     let categoria="";
     let categorias = data.events.filter((evento, indice) => {
         
         if(indice==0){
-            categoria=evento.category;
-            return categoria;
+            return categoria=evento.category;
         }
         if(categoria!=evento.category){
-            categoria=evento.category;
-            return categoria;
+            return categoria=evento.category; 
         }
     })
     return categorias
@@ -42,8 +42,8 @@ function filtrarCategorias(data){
 function crearCheckBoxs(categoria){
    return   `<div class="ms-3 me-2 mb-3">
                 <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="inlineFormCheck2">
-                <label class="form-check-label" for="inlineFormCheck2">
+                <input class="form-check-input seleccion" type="checkbox" id="${categoria.category}">
+                <label class="form-check-label" for="${categoria.category}">
                     ${categoria.category}
                 </label>
                 </div>
@@ -62,3 +62,27 @@ function imprimirCheckBoxs(categorias, contenedorCb){
 }
 
 imprimirCheckBoxs(filtrarCategorias(data),"categorias")
+
+function obtenerCategorias(data){
+    let categorias=document.querySelectorAll(".seleccion")
+    categorias.forEach(categoria =>{
+        categoria.addEventListener('input', () => {
+            let checkedActivo = Array.from(categorias)
+                .filter(categoria => categoria.checked)
+                .map(categoria => categoria.id);
+
+                if(checkedActivo.length>0){
+                    imprimirTarjetas(categoriasSeleccionadas(data,checkedActivo),contTarjetas)
+                }else{
+                    imprimirTarjetas(eventos,contTarjetas)
+                }       
+        })
+    })
+}
+
+function categoriasSeleccionadas(data,checkedActivo){
+    if(checkedActivo){          
+        return data.events.filter(evento => checkedActivo.includes(evento.category));
+    }           
+} 
+obtenerCategorias(data)
