@@ -25,13 +25,9 @@ function imprimirTarjetas(array,contenedor) {
 } 
 imprimirTarjetas(eventos,contTarjetas);
 
-function filtrarCategorias(data){
+function filtrarCategorias(){
     let categoria="";
-    let categorias = data.events.filter((evento, indice) => {
-        
-        if(indice==0){
-            return categoria=evento.category;
-        }
+    let categorias = eventos.filter(evento => {
         if(categoria!=evento.category){
             return categoria=evento.category; 
         }
@@ -39,7 +35,7 @@ function filtrarCategorias(data){
     return categorias
 }
 
-function crearCheckBoxs(categoria){
+function crearCheckBoxes(categoria){
    return   `<div class="ms-3 me-2 mb-3">
                 <div class="form-check">
                 <input class="form-check-input seleccion" type="checkbox" id="${categoria.category}">
@@ -50,29 +46,31 @@ function crearCheckBoxs(categoria){
             </div>`
 }
 
-function imprimirCheckBoxs(categorias, contenedorCb){
-    let contCheckBoxs= document.getElementById(contenedorCb);
+function imprimirCheckBoxes(categorias, contenedorCb){
+    let contCheckBoxes= document.getElementById(contenedorCb);
     let contenidoHtml="";
 
     categorias.forEach(categoria => {
-        contenidoHtml+=crearCheckBoxs(categoria);
+        contenidoHtml+=crearCheckBoxes(categoria);
     })
 
-    contCheckBoxs.innerHTML=contenidoHtml;
+    contCheckBoxes.innerHTML=contenidoHtml;
 }
 
-imprimirCheckBoxs(filtrarCategorias(data),"categorias")
+imprimirCheckBoxes(filtrarCategorias(),"categorias")
 
-function obtenerCategorias(data){
-    let categorias=document.querySelectorAll(".seleccion")
+let categorias=document.querySelectorAll(".seleccion")
+
+function obtenerCategorias(){
     categorias.forEach(categoria =>{
         categoria.addEventListener('input', () => {
             let checkedActivo = Array.from(categorias)
                 .filter(categoria => categoria.checked)
                 .map(categoria => categoria.id);
-
+                
                 if(checkedActivo.length>0){
-                    imprimirTarjetas(categoriasSeleccionadas(data,checkedActivo),contTarjetas)
+                    imprimirTarjetas(categoriasSeleccionadas(checkedActivo),contTarjetas)
+                    if(entradatexto.length>0){filtrarPorBuscador(entradatexto)}
                 }else{
                     imprimirTarjetas(eventos,contTarjetas)
                 }       
@@ -80,9 +78,51 @@ function obtenerCategorias(data){
     })
 }
 
-function categoriasSeleccionadas(data,checkedActivo){
-    if(checkedActivo){          
-        return data.events.filter(evento => checkedActivo.includes(evento.category));
+function categoriasSeleccionadas(checkedActivo){
+    if(checkedActivo.length>0){          
+        return eventos.filter(evento => checkedActivo.includes(evento.category));
     }           
 } 
-obtenerCategorias(data)
+
+obtenerCategorias()
+
+function borrarChecks(){
+    Array.from(categorias).filter(categoria => categoria.checked).map(categoria => categoria.checked=false);  
+}
+
+let entradatexto= document.getElementById("buscador");
+
+function obtenerEntradaBuscador(){
+    let valorTexto;
+    entradatexto.addEventListener('input',(e)=>{
+        valorTexto=e.target.value;
+        if(valorTexto.length>0){
+            filtrarPorBuscador(valorTexto);
+        }else{
+            imprimirTarjetas(eventos,contTarjetas);
+            borrarChecks();
+        }
+    })
+}
+obtenerEntradaBuscador()
+
+let formBuscador= document.getElementById("formularioBusqueda");
+
+function filtrarPorBuscador(valor){
+    formBuscador.addEventListener('submit',(e) => {
+    e.preventDefault()
+
+    let valorBusqueda=valor;
+    let tarjetasFiltradas=eventos.filter(evento=>evento.description.toLocaleLowerCase().includes(valorBusqueda)||evento.name.toLocaleLowerCase().includes(valorBusqueda))
+
+        if(tarjetasFiltradas.length>0){
+            imprimirTarjetas(tarjetasFiltradas,contTarjetas)
+        }else{
+            contTarjetas.innerHTML=`<p class="text-center fs-2 text-light">No information was found under those search criteria</p>`
+            let main=document.querySelector('main')
+            main.classList.remove("justify-content-between")
+            contTarjetas.classList.add("flex-grow-1", "mt-5")
+        }
+    
+    })
+}
