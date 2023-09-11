@@ -30,10 +30,7 @@ function imprimirTarjetas(eventos,contenedor) {
         }
         contenedor.innerHTML = html;
     } else {
-        contenedor.innerHTML = `<p class="text-center fs-2 text-light">No information was found under those search criteria</p>`;
-        let main = document.querySelector("main");
-        main.classList.remove("justify-content-between");
-        contenedor.classList.add("flex-grow-1", "mt-5");
+        sinEventos(contenedor)
     }
 } 
 function filtrarEventosPasados(data){
@@ -78,7 +75,7 @@ function crearCajasVerificacion(categoria){
 imprimirCajasVerificacion(filtrarCategorias(eventos), contCajasVerificacion)
 
 contCajasVerificacion.addEventListener('input', () => {
-    let filtCajasVerificacion= filtrarCruzado(eventos,entradaTexto, contTarjetas)
+    let filtCajasVerificacion= filtrarCruzado(filtrarEventosPasados(data),entradaTexto, contTarjetas)
     imprimirTarjetas(filtCajasVerificacion,contTarjetas)
 })
 
@@ -94,7 +91,7 @@ function filtrarPorCajasVerificacion(eventos,contTarjetas){
 }
 
 botonBusqueda.addEventListener('click', () => {
-    let filtBuscador= filtrarCruzado(eventos,entradaTexto, contTarjetas)
+    let filtBuscador= filtrarCruzado(filtrarEventosPasados(data),entradaTexto, contTarjetas)
     imprimirTarjetas(filtBuscador,contTarjetas)
 })
 
