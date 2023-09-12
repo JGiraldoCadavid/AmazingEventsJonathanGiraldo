@@ -30,7 +30,10 @@ function imprimirTarjetas(eventos,contenedor) {
         }
         contenedor.innerHTML = html;
     } else {
-        sinEventos(contenedor);
+        contenedor.innerHTML = `<p class="text-center fs-2 text-light">No information was found under those search criteria</p>`;
+        let main = document.querySelector("main");
+        main.classList.remove("justify-content-between");
+        contenedor.classList.add("flex-grow-1", "mt-5");
     }
 } 
 function filtrarEventosFuturos(data){
@@ -103,7 +106,7 @@ function filtrarPorBuscador(eventos, entradaTexto, contTarjetas){
     if(valoresSeleccionados.length>0){
         return valoresSeleccionados
     }else{
-        return sinEventos(contTarjetas)
+        return []
     }
 }
 
@@ -111,11 +114,4 @@ function filtrarCruzado(eventos,entradaTexto,contTarjetas){
     const filtroBuscador= filtrarPorBuscador(eventos,entradaTexto,contTarjetas)
     const filtroCajasVerificacion= filtrarPorCajasVerificacion(filtroBuscador,contTarjetas)
     return filtroCajasVerificacion
-}
-
-function sinEventos(contenedor){
-    contenedor.innerHTML = `<p class="text-center fs-2 text-light">No information was found under those search criteria</p>`;
-    let main = document.querySelector("main");
-    main.classList.remove("justify-content-between");
-    contenedor.classList.add("flex-grow-1", "mt-5");
 }
