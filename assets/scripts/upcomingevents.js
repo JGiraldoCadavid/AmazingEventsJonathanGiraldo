@@ -1,4 +1,4 @@
-let eventos=data.events;
+let eventos;
 let contTarjetas=document.getElementById("contTarjetas")
 let categorias=document.querySelectorAll(".seleccion")
 let contCajasVerificacion= document.getElementById("contCajasVerificacion");
@@ -45,7 +45,6 @@ function filtrarEventosFuturos(data){
     }
     return eventosProximos;
 } 
-imprimirTarjetas(filtrarEventosFuturos(data),contTarjetas);
 
 function filtrarCategorias(eventos){
     const categorias=eventos.map(evento => evento.category);
@@ -75,13 +74,6 @@ function crearCajasVerificacion(categoria){
     contCajasVerificacion.innerHTML=contenidoHtml;
 }
 
-imprimirCajasVerificacion(filtrarCategorias(eventos), contCajasVerificacion)
-
-contCajasVerificacion.addEventListener('input', () => {
-    let filtCajasVerificacion= filtrarCruzado(filtrarEventosFuturos(data),entradaTexto, contTarjetas)
-    imprimirTarjetas(filtCajasVerificacion,contTarjetas)
-})
-
 function filtrarPorCajasVerificacion(eventos,contTarjetas){
     let valoresSeleccionados= Array.from(document.querySelectorAll("input[type='checkbox']:checked")).map(input => input.id)
 
@@ -92,11 +84,6 @@ function filtrarPorCajasVerificacion(eventos,contTarjetas){
     }
     
 }
-
-botonBusqueda.addEventListener('click', () => {
-    let filtBuscador= filtrarCruzado(filtrarEventosFuturos(data),entradaTexto, contTarjetas)
-    imprimirTarjetas(filtBuscador,contTarjetas)
-})
 
 function filtrarPorBuscador(eventos, entradaTexto, contTarjetas){
     let valorBusqueda=entradaTexto.value
@@ -115,3 +102,23 @@ function filtrarCruzado(eventos,entradaTexto,contTarjetas){
     const filtroCajasVerificacion= filtrarPorCajasVerificacion(filtroBuscador,contTarjetas)
     return filtroCajasVerificacion
 }
+
+fetch('https://mindhub-xj03.onrender.com/api/amazing')
+    .then(resolve => resolve.json())
+    .then(data => {
+        eventos=data.events
+        datos=data
+        imprimirTarjetas(filtrarEventosFuturos(datos),contTarjetas);
+        imprimirCajasVerificacion(filtrarCategorias(eventos), contCajasVerificacion)
+    })
+    .catch(err => console.log(err))
+
+contCajasVerificacion.addEventListener('input', () => {
+    let filtCajasVerificacion= filtrarCruzado(filtrarEventosFuturos(datos),entradaTexto, contTarjetas)
+    imprimirTarjetas(filtCajasVerificacion,contTarjetas)
+})
+
+botonBusqueda.addEventListener('click', () => {
+    let filtBuscador= filtrarCruzado(filtrarEventosFuturos(datos),entradaTexto, contTarjetas)
+    imprimirTarjetas(filtBuscador,contTarjetas)
+})
