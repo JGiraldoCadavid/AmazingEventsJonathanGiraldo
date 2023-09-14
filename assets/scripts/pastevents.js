@@ -14,7 +14,7 @@ fetch(urlApi)
         let eventos=data.events
         let datos=data
         filtroEventos=eventos.filter(evento => datos.currentDate>evento.date)
-        let filtroCategorias= Array.from(new Set(eventos.map(evento => evento.category)))
+        let filtroCategorias= Array.from(new Set(filtroEventos.map(evento => evento.category)))
         imprimirTarjetas(filtroEventos,contTarjetas,urlDetalles);
         imprimirCajasVerificacion(filtroCategorias, contCajasVerificacion)
     })

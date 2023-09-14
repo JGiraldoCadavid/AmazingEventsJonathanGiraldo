@@ -113,6 +113,10 @@ body{
 }
 .btn{
     height: 38px;
+    box-shadow: 4px 4px 0px 0px #88cff1;
+}
+.btn:hover{
+    background-color: #198754;
 }
 .body-bottom{
     max-height: 70px;

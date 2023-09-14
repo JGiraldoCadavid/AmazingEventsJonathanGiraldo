@@ -82,21 +82,21 @@ function calcularEstadisticasEventos(eventos) {
     let categorias = Array.from(new Set(eventos.map(evento => evento.category)));
         
     let ganancias = categorias.map(categoria => {
-        let eventosCategoria = eventos.filter(evento => evento.category === categoria);
+        let eventosCategoria = eventos.filter(evento => evento.category == categoria);
         return eventosCategoria.reduce((acumulador, evento) => acumulador + (evento.price * (evento.assistance || evento.estimate)), 0);
     });
       
     let totAsistenciaEstimado = categorias.map(categoria => {
-        let eventosCategoria = eventos.filter(evento => evento.category === categoria);
+        let eventosCategoria = eventos.filter(evento => evento.category == categoria);
         return eventosCategoria.reduce((acumulador, evento) => acumulador + (evento.assistance || evento.estimate), 0);
     });
       
     let capacidadTotal = categorias.map(categoria => {
-        let eventosCategoria = eventos.filter(evento => evento.category === categoria);
+        let eventosCategoria = eventos.filter(evento => evento.category == categoria);
         return eventosCategoria.reduce((acumulador, evento) => acumulador + evento.capacity, 0);
     });
     
-    let porcAsistenciaEstimado = totAsistenciaEstimado.map((asistencia, indice) => ((asistencia / capacidadTotal[indice]) * 100).toFixed(2));
+    let porcAsistenciaEstimado = totAsistenciaEstimado.map((asistenciaEstimado, indice) => ((asistenciaEstimado / capacidadTotal[indice]) * 100).toFixed(2));
     
     return [categorias, ganancias, porcAsistenciaEstimado]
 } 
