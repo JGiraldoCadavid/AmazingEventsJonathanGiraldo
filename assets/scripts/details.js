@@ -1,8 +1,18 @@
-
 let parametro= location.search;
 let urlParametro= new URLSearchParams(parametro);
 let idEvento=urlParametro.get("parametro")
 let contDetalle=document.getElementById("contDetalle");
+let urlApi='https://mindhub-xj03.onrender.com/api/amazing';
+
+fetch(urlApi)
+    .then(resolve => resolve.json())
+    .then(data => {
+        let datos=data
+        let evento=datos.events.find(evento => evento._id == idEvento);
+        console.log(evento)
+        crearDetalle(evento,contDetalle,datos)
+    })
+    .catch(err => err)
 
 function crearDetalle(evento,contDetalle,data){
     contDetalle.innerHTML += 
@@ -33,15 +43,3 @@ let estimado=document.getElementById("estimado")
         asistencia.classList.add("d-none")
     }    
 }
-
-
-
-fetch('https://mindhub-xj03.onrender.com/api/amazing')
-    .then(resolve => resolve.json())
-    .then(data => {
-        datos=data
-        evento=datos.events.find(evento => evento._id == idEvento);
-
-        crearDetalle(evento,contDetalle,datos)
-    })
-    .catch(err => console.log(err))

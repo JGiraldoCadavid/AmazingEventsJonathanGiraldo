@@ -64,7 +64,6 @@ footer{
     transition: all 2s ease-in;
 }
 .iconos-redes img{
-    width:10vw;
     height: 5vh;
     color: white;
     border-radius: 50%;
@@ -137,7 +136,7 @@ form{
     min-height:62.3vh;
 }
 table{
-    width: 92%!important;
+    width: 70%!important;
     margin-top: 1rem;
     margin-left: 1rem;
     margin-right: 1rem;
@@ -146,6 +145,7 @@ table{
 th,td{
     padding: 0.8rem!important;
     border-radius: 3px!important;
+    width: 33.3%;
 }
 .tabla-tit-principal{
     background-color: #00fcfa!important;
@@ -216,10 +216,6 @@ textarea{resize: none;}
      }
 }
 @media screen and (min-width:768px) and (max-width:1023px){
-    .iconos-redes img{
-        width:6vw;
-        height: 6vh;
-    }
     .btn-contact{
         width: 90%;
     }
@@ -237,10 +233,6 @@ textarea{resize: none;}
      }
 }
 @media screen and (min-width:1024px){
-    .iconos-redes img{
-        width:50px;
-        height: 50px;
-    }
     .card-title, .card-text,p, a,label{
         font-size:large;
     }
